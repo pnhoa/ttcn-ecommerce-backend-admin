@@ -165,6 +165,7 @@ CREATE TABLE IF NOT EXISTS `ttcn-ecommerce`.`product` (
   `brand` VARCHAR(255) NULL DEFAULT NULL,
   `name` VARCHAR(255) NULL DEFAULT NULL,
   `price` DECIMAL(19,2) NULL DEFAULT NULL,
+  `unit_in_stock` INT NOT NULL DEFAULT 0,
   `thumbnail` VARCHAR(200) NULL DEFAULT NULL,
   `category_id` BIGINT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
