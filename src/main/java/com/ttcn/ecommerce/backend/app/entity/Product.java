@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
+@JsonIgnoreProperties({"feedbacks"})
 public class Product extends BaseEntity{
 
     @Column(name = "name", nullable = false)
@@ -34,6 +36,10 @@ public class Product extends BaseEntity{
     @JoinColumn(name = "category_id")
     @JsonIgnoreProperties("products")
     private Category category;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("product")
+    Set<Feedback> feedbacks;
 
     public String getName() {
         return name;

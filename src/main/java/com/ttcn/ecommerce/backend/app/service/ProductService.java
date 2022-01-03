@@ -6,6 +6,8 @@ import com.ttcn.ecommerce.backend.app.entity.Product;
 import com.ttcn.ecommerce.backend.app.exception.ResourceNotFoundException;
 import com.ttcn.ecommerce.backend.app.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,11 @@ public class ProductService implements IProductService{
     @Override
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public Page<Product> findAllPageAndSort(Pageable pagingSort) {
+        return  productRepository.findAll(pagingSort);
     }
 
     @Override
@@ -99,5 +106,15 @@ public class ProductService implements IProductService{
     @Override
     public List<Product> search(String key) {
         return productRepository.search(key.toLowerCase());
+    }
+
+    @Override
+    public Page<Product> findByNameContaining(String productName, Pageable pagingSort) {
+        return productRepository.findByNameContaining(productName, pagingSort);
+    }
+
+    @Override
+    public Long count() {
+        return productRepository.count();
     }
 }
