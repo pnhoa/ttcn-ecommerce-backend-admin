@@ -9,10 +9,8 @@ import com.ttcn.ecommerce.backend.app.repository.CustomerRepository;
 import com.ttcn.ecommerce.backend.app.repository.RoleRepository;
 import com.ttcn.ecommerce.backend.app.utils.CustomerDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

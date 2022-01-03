@@ -7,10 +7,7 @@ import com.ttcn.ecommerce.backend.app.service.IProductService;
 import com.ttcn.ecommerce.backend.app.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/products")
@@ -38,25 +33,7 @@ public class ProductAPI {
 
         try {
 
-            List<Order> orders = new ArrayList<>();
-
-            if (sort[0].contains(",")) {
-                // will sort more than 2 fields
-                // sortOrder="field, direction"
-                for (String sortOrder : sort) {
-                    String[] _sort = sortOrder.split(",");
-                    Sort.Direction dire = CommonUtils.getSortDirection(_sort[1]);
-                    Order order = new Order(dire,_sort[0]);
-                    orders.add( order );
-                }
-            } else {
-                // sort=[field, direction]
-                Sort.Direction dire = CommonUtils.getSortDirection(sort[1]);
-                Order order = new Order(dire, sort[0]);
-                orders.add( order );
-            }
-
-            Pageable pagingSort = PageRequest.of(page, limit, Sort.by(orders));
+            Pageable pagingSort = CommonUtils.sortItem(page, limit, sort);
             Page<Product> productPage;
 
             if(productName == null) {

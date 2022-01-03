@@ -2,7 +2,6 @@ package com.ttcn.ecommerce.backend.app.dto;
 
 import com.ttcn.ecommerce.backend.app.entity.Category;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
