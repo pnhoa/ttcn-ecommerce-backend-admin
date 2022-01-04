@@ -67,7 +67,7 @@ public class ProductAPI {
         }
 
         MessageResponse messageResponse = productService.createProduct(theProductDto);
-        return new ResponseEntity<MessageResponse>(messageResponse, HttpStatus.CREATED);
+        return new ResponseEntity<MessageResponse>(messageResponse, messageResponse.getStatus());
     }
 
     @PutMapping("/{id}")
@@ -79,7 +79,7 @@ public class ProductAPI {
         }
 
         MessageResponse messageResponse = productService.updateProduct(theId, theProductDto);
-        return new ResponseEntity<MessageResponse>(messageResponse, HttpStatus.OK);
+        return new ResponseEntity<MessageResponse>(messageResponse, messageResponse.getStatus());
     }
 
     @DeleteMapping("/{id}")

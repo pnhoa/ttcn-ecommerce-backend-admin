@@ -59,7 +59,7 @@ public class CategoryService implements ICategoryService{
         } else {
 
             theCategory.get().setModifiedDate(new Date());
-            theCategory.get().setModefiedBy("");
+            theCategory.get().setModifiedBy("");
             theCategory.get().setName(theCategoryDto.getName());
             theCategory.get().setDescription(theCategoryDto.getDescription());
             theCategory.get().setThumbnail(theCategoryDto.getThumbnail());

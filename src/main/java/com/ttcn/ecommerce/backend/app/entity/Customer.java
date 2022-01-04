@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "customer")
-@JsonIgnoreProperties({"role", "feedbacks"})
+@JsonIgnoreProperties({"role", "feedbacks", "password"})
 public class Customer extends BaseEntity{
 
     @Column(name = "username", unique = true, nullable = false)

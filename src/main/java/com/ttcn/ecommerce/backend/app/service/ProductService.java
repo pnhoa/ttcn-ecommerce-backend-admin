@@ -80,7 +80,7 @@ public class ProductService implements IProductService{
             theProduct.get().setUnitInStock(theProductDto.getUnitInStock());
             theProduct.get().setCategory(categoryService.findById(theProductDto.getCategoryId()));
             theProduct.get().setModifiedDate(new Date());
-            theProduct.get().setModefiedBy("");
+            theProduct.get().setModifiedBy("");
 
             productRepository.save(theProduct.get());
         }

@@ -1,5 +1,6 @@
 package com.ttcn.ecommerce.backend.app.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ttcn.ecommerce.backend.app.entity.Feedback;
 import com.ttcn.ecommerce.backend.app.entity.Role;
 import com.ttcn.ecommerce.backend.app.utils.Provider;
@@ -10,11 +11,15 @@ import com.ttcn.ecommerce.backend.app.validation.ValidUsername;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
+@JsonIgnoreProperties({"role", "roleCode", "feedbacks" })
 public class CustomerDTO extends AbstractDTO{
 
     @ValidUsername
     @NotNull(message = "is required")
     private String userName;
+
+    @NotNull(message = "is required")
+    private String password;
 
     @NotNull(message = "is required")
     private String name;
@@ -140,5 +145,13 @@ public class CustomerDTO extends AbstractDTO{
 
     public void setFeedbacks(Set<Feedback> feedbacks) {
         this.feedbacks = feedbacks;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

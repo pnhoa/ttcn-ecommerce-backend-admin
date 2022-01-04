@@ -30,7 +30,7 @@ public abstract class BaseEntity {
 
     @Column(name = "modifiedby")
     @LastModifiedBy
-    private String modefiedBy;
+    private String modifiedBy;
 
 
     public BaseEntity() {
@@ -69,11 +69,11 @@ public abstract class BaseEntity {
         this.createdBy = createdBy;
     }
 
-    public String getModefiedBy() {
-        return modefiedBy;
+    public String getModifiedBy() {
+        return modifiedBy;
     }
 
-    public void setModefiedBy(String modefiedBy) {
-        this.modefiedBy = modefiedBy;
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 }

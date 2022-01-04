@@ -1,6 +1,9 @@
 package com.ttcn.ecommerce.backend.app.repository;
 
 import com.ttcn.ecommerce.backend.app.entity.Customer;
+import com.ttcn.ecommerce.backend.app.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,4 +23,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("SELECT c FROM Customer c WHERE lower(c.userName) LIKE %?1%"
             + " OR lower(c.name) LIKE %?1% OR lower(c.email) LIKE %?1% OR lower(c.phoneNumber) LIKE %?1%" )
     List<Customer> search(String key);
+
+    Page<Customer> findByUserNameContaining(String userName, Pageable pageable);
 }

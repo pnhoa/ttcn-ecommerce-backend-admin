@@ -2,6 +2,9 @@ package com.ttcn.ecommerce.backend.app.service;
 
 import com.ttcn.ecommerce.backend.app.dto.CustomerDTO;
 import com.ttcn.ecommerce.backend.app.dto.MessageResponse;
+import com.ttcn.ecommerce.backend.app.entity.Customer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -16,9 +19,9 @@ public interface ICustomerService extends UserDetailsService {
 
     CustomerDTO findByEmail(String email);
 
-    MessageResponse createUser(CustomerDTO theCustomer);
+    MessageResponse createCustomer(CustomerDTO theCustomer);
 
-    MessageResponse updateUser(Long theId, CustomerDTO theCustomer);
+    MessageResponse updateCustomer(Long theId, CustomerDTO theCustomer);
 
     void deleteCustomer(Long theId);
 
@@ -27,4 +30,10 @@ public interface ICustomerService extends UserDetailsService {
     Boolean existsByUserName(String username);
 
     List<CustomerDTO> search(String key);
+
+    Page<Customer> findAllPageAndSort(Pageable pagingSort);
+
+    Page<Customer> findByUserNameContaining(String userName, Pageable pagingSort);
+
+    Long count();
 }
