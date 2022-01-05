@@ -154,7 +154,7 @@ public class CustomerService implements ICustomerService {
             throw new ResourceNotFoundException("Not found customer with ID=" + theId);
         } else {
             theCustomer.get().setModifiedDate(new Date());
-            theCustomer.get().setModifiedBy(theCustomer.get().getName());
+            theCustomer.get().setModifiedBy(theCustomer.get().getUserName());
             theCustomer.get().setName(theCustomerDto.getName());
             theCustomer.get().setEmail(theCustomerDto.getEmail());
             theCustomer.get().setPhoneNumber(theCustomerDto.getPhoneNumber());

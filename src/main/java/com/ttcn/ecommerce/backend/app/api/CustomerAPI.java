@@ -2,9 +2,7 @@ package com.ttcn.ecommerce.backend.app.api;
 
 import com.ttcn.ecommerce.backend.app.dto.CustomerDTO;
 import com.ttcn.ecommerce.backend.app.dto.MessageResponse;
-import com.ttcn.ecommerce.backend.app.dto.ProductDTO;
 import com.ttcn.ecommerce.backend.app.entity.Customer;
-import com.ttcn.ecommerce.backend.app.entity.Product;
 import com.ttcn.ecommerce.backend.app.service.ICustomerService;
 import com.ttcn.ecommerce.backend.app.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
