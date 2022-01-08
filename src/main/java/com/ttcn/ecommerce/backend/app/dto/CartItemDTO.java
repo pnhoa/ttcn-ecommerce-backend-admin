@@ -2,27 +2,28 @@ package com.ttcn.ecommerce.backend.app.dto;
 
 
 public class CartItemDTO extends AbstractDTO {
-    private long cartId;
 
-    private long productId;
+    private Long cartId;
+
+    private Long productId;
 
     private int quantity;
 
     private int status;
 
-    public long getCartId() {
+    public Long getCartId() {
         return cartId;
     }
 
-    public void setCartId(long cartId) {
+    public void setCartId(Long cartId) {
         this.cartId = cartId;
     }
 
-    public long getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(long productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 

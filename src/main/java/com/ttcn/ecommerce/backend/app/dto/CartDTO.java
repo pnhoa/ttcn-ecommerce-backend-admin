@@ -1,8 +1,6 @@
 package com.ttcn.ecommerce.backend.app.dto;
 
 
-import com.ttcn.ecommerce.backend.app.entity.CartItem;
-
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,6 +8,7 @@ import java.util.List;
 
 public class CartDTO extends AbstractDTO {
 
+    @NotNull(message = "is required")
     private long customerId;
 
     private String note;
@@ -19,16 +18,17 @@ public class CartDTO extends AbstractDTO {
     @NotNull(message = "is required")
     private String address;
 
-    private List<CartItem> cartItems = new ArrayList<>();
 
-    public List<CartItem> getCartItems() {
+    private List<CartItemDTO> cartItems = new ArrayList<>();
+
+    public List<CartItemDTO> getCartItems() {
         return cartItems;
     }
 
-    public void setCartItems(List<CartItem> cartItems) {
-        this.cartItems = cartItems;
+    public void setCartItems(List<CartItemDTO> cartItems) {
+        this.cartItems.clear();
+        this.cartItems.addAll(cartItems);
     }
-
 
     public long getCustomerId() {
         return customerId;
