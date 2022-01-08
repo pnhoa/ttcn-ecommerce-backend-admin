@@ -1,0 +1,351 @@
+TTCN ECOMMERCE RESFULL API BACKEND - Spring Boot
+
+Run sql script in mysql workbench and run app in intellij
+
+DOCS-API: URL: http://localhost:8080/v2/api-docs
+
+----- API document summary ------------------
+
++ Auth (Customer)
+    - Login
+        URL: http://localhost:8080/auth/signin
+        Method: POST
+        Body: "userName",
+              "password"
+        Return:
+            * if valid account
+                {
+                    "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcjAzIiwiaWF0IjoxNjQxNjEzODA2LCJleHAiOjE2NDE3MDAyMDZ9.4jcLd_wVfxI_UWkV4jimA963_hqoRpRJalE3tS3ejXsm-0L-TAw928Svy2JTezR-r0cFnQpg7uL-s9Bu9qEhSA",
+                    "type": "Bearer",
+                    "id": 7,
+                    "username": "customer03",
+                    "email": "customer03@gmail.com",
+                    "roles": [
+                        "ROLE_CUSTOMER"
+                    ]
+                }
+            * invalid account:
+            return Http status 401 (Unauthorized)
+    - Register
+        URL: http://localhost:8080/auth/signup
+            Method: POST
+            Body: "userName",
+                  "password",
+                  "name",
+                  "address",
+                  "phoneNumber",
+                  "email",
+                  "profilePicture",
+                  "gender" (0,1,2) -> (Male, Female, LGBT)
+            Return:
+                * if valid account
+                    {
+                        "message": "Customer registered successfully!",
+                        "status": "OK",
+                        "timestamp": "2022-01-08T10:57:23.7645798"
+                    }
+                * invalid account:
+                    return Http status 400 (Bad Request)
+                    {
+                        "message": "Error: Username is already use.",
+                        "status": "BAD_REQUEST",
+                        "timestamp": "2022-01-08T10:57:50.9573652"
+                    }
+
++ Products: base url for product -> http://localhost:8080/products
+    - Get all products
+        Method: GET
+        URL: http://localhost:8080/products
+        Parameter: limit(optional, default = 10), page(optional, default = 1), sort(optional, default = id,ASC), productName_contains(optional), categoryId(optional)
+        Return value: Array of products with fields below
+                      "id"
+                      "createdDate",
+                      "modifiedDate",
+                      "createdBy",
+                      "modifiedBy",
+                      "name",
+                      "brand",
+                      "shortDescription",
+                      "description",
+                      "price",
+                      "unitInStock",
+                      "thumbnail"
+        "responses": {
+        "200": {
+        "description": "OK",
+        "schema": {
+        "type": "array",
+        "items": {
+        "$ref": "#/definitions/Product"
+        }
+        }
+        },
+        "401": {
+        "description": "Unauthorized"
+        },
+        "403": {
+        "description": "Forbidden"
+        },
+        "404": {
+        "description": "Not Found"
+        }
+        }
+    - Get product by id
+        Method: GET
+        URL: http://localhost:8080/products/{id}
+        Return : 1 element with fields same with get all products
+    - Get products by CategoryId
+        Method: GET
+        URL: http://localhost:8080/products?categoryId=?
+        Return : Array of products with fields same with get all products
+    - Count numbers of products in DB
+        Method: GET
+        URL: http://localhost:8080/products/count
+        Return: Number
+    - Create product (ROLE: EMPLOYEE, ADMIN)
+        Method: POST
+        URL: http://localhost:8080/products
+        Body:     "name",
+                  "brand",
+                  "shortDescription",
+                  "description",
+                  "price",
+                  "unitInStock",
+                  "thumbnail",
+                  "categoryId",
+                  "createdBy"
+    - Update product (ROLE: EMPLOYEE, ADMIN)
+        Method: PUT
+        URL: http://localhost:8080/products/{id}
+        Body:   "name",
+                "brand",
+                "shortDescription",
+                "description",
+                "price",
+                "unitInStock",
+                "thumbnail",
+                "categoryId",
+                "modifiedBy"
+    - Delete product (ROLE: ADMIN)
+        Method: DELETE
+        URL: http://localhost:8080/products/{id}
++ Categories: base url for category -> http://localhost:8080/categories
+    - Get all categories
+        Method: GET
+        URL: http://localhost:8080/categories
+        Parameter: limit(optional, default = 10), page(optional, default = 1), sort(optional, default = id,ASC), categoryName_contains(optional)
+        Return value: Array of categories with fields below
+                      "id"
+                      "createdDate",
+                      "modifiedDate",
+                      "createdBy",
+                      "modifiedBy",
+                      "name"
+                      "description"
+                      "thumbnail"
+        "responses": {
+        "200": {
+        "description": "OK",
+        "schema": {
+        "type": "array",
+        "items": {
+        "$ref": "#/definitions/Category"
+        }
+        }
+        },
+        "401": {
+        "description": "Unauthorized"
+        },
+        "403": {
+        "description": "Forbidden"
+        },
+        "404": {
+        "description": "Not Found"
+        }
+        }
+    - Get category by id
+        Method: GET
+        URL: http://localhost:8080/categories/{id}
+        Return : 1 element with fields same with get all categories
+    - Count numbers of categories in DB
+        Method: GET
+        URL: http://localhost:8080/categories/count
+        Return: Number
+    - Create category (ROLE: EMPLOYEE, ADMIN)
+        Method: POST
+        URL: http://localhost:8080/categories
+        Body:   "createdBy",
+                "modifiedBy",
+                "name",
+                "description",
+                "thumbnail"
+    - Update category (ROLE: EMPLOYEE, ADMIN)
+        Method: PUT
+        URL: http://localhost:8080/categories/{id}
+        Body:
+                "name",
+                "description",
+                "thumbnail"
+                "modifiedBy"
+    - Delete category (ROLE: ADMIN)
+        Method: DELETE
+        URL: http://localhost:8080/categories/{id}
+
++ Customers: base url for customer -> http://localhost:8080/customers
+    - Get all customers (ROLE: ADMIN, EMPLOYEE)
+        Method: GET
+        URL: http://localhost:8080/customers
+        Parameter: limit(optional, default = 10), page(optional, default = 1), sort(optional, default = id,ASC), userName_contains(optional)
+        Return value: Array of customers with fields below
+                      "id",
+                      "createdDate",
+                      "modifiedDate",
+                      "createdBy",
+                      "modifiedBy",
+                      "userName",
+                      "name",
+                      "address",
+                      "phoneNumber",
+                      "email",
+                      "gender",
+                      "profilePicture",
+                      "enabled",
+                      "provider"
+        "responses": {
+        "200": {
+        "description": "OK",
+        "schema": {
+        "type": "array",
+        "items": {
+        "$ref": "#/definitions/Customer"
+        }
+        }
+        },
+        "401": {
+        "description": "Unauthorized"
+        },
+        "403": {
+        "description": "Forbidden"
+        },
+        "404": {
+        "description": "Not Found"
+        }
+        }
+    - Get customer by id (ROLE: CUSTOMER, ADMIN, EMPLOYEE)
+        Method: GET
+        URL: http://localhost:8080/customers/{id}
+        Return : 1 element with fields same with get all customers
+    - Count numbers of customers in DB
+        Method: GET
+        URL: http://localhost:8080/customers/count
+        Return: Number
+    - Update customer (ROLE: CUSTOMER)
+        Method: PUT
+        URL: http://localhost:8080/customers/{id}
+        Body: "modifiedBy",
+              "userName" (not modified),
+              "name",
+              "address",
+              "phoneNumber",
+              "email",
+              "gender",
+              "profilePicture",
+              "enabled",
+              "provider"
+    - Delete customer (ROLE: ADMIN)
+        Method: DELETE
+        URL: http://localhost:8080/customers/{id}
++ Feedbacks: base url for feedback -> http://localhost:8080/feedbacks
+    - Get all feedbacks
+        Method: GET
+        URL: http://localhost:8080/feedbacks
+        Parameter: limit(optional, default = 10), page(optional, default = 1), sort(optional, default = id,ASC), rating_contains(optional)
+        Return value: Array of feedbacks with fields below
+                 [
+                      {
+                      "id": 1,
+                      "createdDate": null,
+                      "modifiedDate": null,
+                      "createdBy": null,
+                      "modifiedBy": null,
+                      "rating": 5,
+                      "product": {
+                          "id": 1,
+                          "createdDate": null,
+                          "modifiedDate": null,
+                          "createdBy": null,
+                          "modifiedBy": null,
+                          "name": "Laptop APPLE MacBook Pro 2020 MYD82SA/A ( 13.3\\\" Apple M1/8GB/256GB SSD/macOS/1.4kg)",
+                          "brand": "Apple",
+                          "shortDescription": "Máy tính xách tay/ Laptop MacBook Air 2020 13.3\" MGN73SA/A",
+                          "description": "Laptop APPLE MacBook Pro 2020 MYD82SA/A có vẻ ngoài cực kỳ sang trọng được kế thừa từ các thế hệ đi trước nhưng bên trong chứa đựng một cấu hình thực sự rất đáng gờm. Sản phẩm Macbook này hứa hẹn sẽ giúp bạn vượt qua mọi công việc hằng ngày ở văn phòng hay cả tại nhà riêng, thích hợp cho mọi người ưa thích sự sáng tạo, luôn tìm tòi những điều mới mẻ trong công việc.",
+                          "price": 31890000,
+                          "unitInStock": 100,
+                          "thumbnail": "https://lh3.googleusercontent.com/6iW6tc0lHp4paCYznq-gC5mEXEGMSBmrSq2I4MaXdPne5XWQI4l8m-bGRVCRFH94d4PEqtUIdH3FERr-VNDWaT2k9qcZ5Ey_PQ=w500-rw"
+                      },
+                      "customer": {
+                          "id": 1,
+                          "createdDate": null,
+                          "modifiedDate": "2022-01-04T11:08:40.596+00:00",
+                          "createdBy": null,
+                          "modifiedBy": "customer01",
+                          "userName": "customer01",
+                          "name": "Customer 01",
+                          "address": "quên MK",
+                          "phoneNumber": "0779439853",
+                          "email": "customer01@gmail.com",
+                          "gender": 1,
+                          "profilePicture": null,
+                          "enabled": 1,
+                          "provider": null
+                      }
+                      }
+                 ]
+        "responses": {
+        "200": {
+        "description": "OK",
+        "schema": {
+        "type": "array",
+        "items": {
+        "$ref": "#/definitions/Feedback"
+        }
+        }
+        },
+        "401": {
+        "description": "Unauthorized"
+        },
+        "403": {
+        "description": "Forbidden"
+        },
+        "404": {
+        "description": "Not Found"
+        }
+        }
+    - Get feedback by id
+        Method: GET
+        URL: http://localhost:8080/feedbacks/{id}
+        Return : 1 element with fields same with get all feedbacks
+    - Count numbers of feedbacks in DB
+        Method: GET
+        URL: http://localhost:8080/feedbacks/count
+        Return: Number
+    - Create feedback
+        Method: POST
+        URL: http://localhost:8080/feedbacks
+        Body:
+              "createdBy": "customer",
+              "rating": 4,
+              "productId": 2,
+              "customerId": 1
+    - Update feedback
+        Method: PUT
+        URL: http://localhost:8080/feedbacks/{id}
+        Body: "modifiedBy",
+              "rating": 4,
+              "productId": 2,
+              "customerId": 1
+    - Delete feedback
+        Method: DELETE
+        URL: http://localhost:8080/feedbacks/{id}
++ Carts: base url for cart -> http://localhost:8080/carts
+    //TO-DO

@@ -27,6 +27,9 @@ public interface IProductService {
     List<Product> search(String key);
 
     Page<Product> findByNameContaining(String productName, Pageable pagingSort);
+    
 
     Long count();
+
+    Page<Product> findByCategoryIdPageAndSort(Long categoryId, Pageable pagingSort);
 }

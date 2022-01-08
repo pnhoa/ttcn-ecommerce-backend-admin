@@ -95,4 +95,14 @@ public class CartItemService implements ICartItemService{
 
         cartItemRepo.delete(cartItem);
     }
+
+    @Override
+    public Page<CartItem> findByIdContaining(Long id, Pageable pagingSort) {
+        return cartItemRepo.findById(id, pagingSort);
+    }
+
+    @Override
+    public Page<CartItem> findByCartIdPageAndSort(Long cartId, Pageable pagingSort) {
+        return cartItemRepo.findByCartId(cartId, pagingSort);
+    }
 }

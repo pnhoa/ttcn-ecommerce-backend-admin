@@ -210,4 +210,19 @@ public class CustomerService implements ICustomerService {
         return customerRepository.count();
     }
 
+    @Override
+    public Customer findByIdCustomer(Long customerId) {
+        Optional<Customer> theCustomer = customerRepository.findById(customerId);
+
+        if(!theCustomer.isPresent()) {
+            throw new ResourceNotFoundException("Not found user with ID=" + customerId);
+        } else {
+            if(theCustomer.get().getEnabled() == 1) {
+                return theCustomer.get();
+            }
+        }
+
+        return null;
+    }
+
 }

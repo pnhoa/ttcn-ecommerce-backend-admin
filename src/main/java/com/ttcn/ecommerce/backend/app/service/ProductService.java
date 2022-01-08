@@ -2,6 +2,7 @@ package com.ttcn.ecommerce.backend.app.service;
 
 import com.ttcn.ecommerce.backend.app.dto.MessageResponse;
 import com.ttcn.ecommerce.backend.app.dto.ProductDTO;
+import com.ttcn.ecommerce.backend.app.entity.Category;
 import com.ttcn.ecommerce.backend.app.entity.Product;
 import com.ttcn.ecommerce.backend.app.exception.ResourceNotFoundException;
 import com.ttcn.ecommerce.backend.app.repository.ProductRepository;
@@ -56,7 +57,7 @@ public class ProductService implements IProductService{
         theProduct.setUnitInStock(theProductDto.getUnitInStock());
         theProduct.setCategory(categoryService.findById(theProductDto.getCategoryId()));
         theProduct.setCreatedDate(new Date());
-        theProduct.setCreatedBy("");
+        theProduct.setCreatedBy(theProductDto.getCreatedBy());
 
         productRepository.save(theProduct);
 
@@ -80,7 +81,7 @@ public class ProductService implements IProductService{
             theProduct.get().setUnitInStock(theProductDto.getUnitInStock());
             theProduct.get().setCategory(categoryService.findById(theProductDto.getCategoryId()));
             theProduct.get().setModifiedDate(new Date());
-            theProduct.get().setModifiedBy("");
+            theProduct.get().setModifiedBy(theProductDto.getModifiedBy());
 
             productRepository.save(theProduct.get());
         }
@@ -116,5 +117,17 @@ public class ProductService implements IProductService{
     @Override
     public Long count() {
         return productRepository.count();
+    }
+
+    @Override
+    public Page<Product> findByCategoryIdPageAndSort(Long categoryId, Pageable pagingSort) {
+
+        Category category = categoryService.findById(categoryId);
+
+        if(category == null){
+            throw  new ResourceNotFoundException("Not found category with ID= " + categoryId);
+        } else {
+            return productRepository.findByCategoryId(categoryId, pagingSort);
+        }
     }
 }

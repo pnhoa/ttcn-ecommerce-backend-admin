@@ -40,7 +40,7 @@ public class CategoryService implements ICategoryService{
         Category theCategory = new Category();
 
         theCategory.setCreatedDate(new Date());
-        theCategory.setCreatedBy("");
+        theCategory.setCreatedBy(theCategoryDto.getCreatedBy());
         theCategory.setName(theCategoryDto.getName());
         theCategory.setDescription(theCategoryDto.getDescription());
         theCategory.setThumbnail(theCategoryDto.getThumbnail());
@@ -59,7 +59,7 @@ public class CategoryService implements ICategoryService{
         } else {
 
             theCategory.get().setModifiedDate(new Date());
-            theCategory.get().setModifiedBy("");
+            theCategory.get().setModifiedBy(theCategoryDto.getModifiedBy());
             theCategory.get().setName(theCategoryDto.getName());
             theCategory.get().setDescription(theCategoryDto.getDescription());
             theCategory.get().setThumbnail(theCategoryDto.getThumbnail());

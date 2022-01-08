@@ -27,6 +27,7 @@ public class ProductAPI {
 
     @GetMapping("")
     public ResponseEntity<List<Product>> findAll( @RequestParam(name = "productName_contains", required = false) String productName,
+                                                  @RequestParam(name = "categoryId", required = false) Long categoryId,
                                                   @RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int limit,
                                                   @RequestParam(defaultValue = "id,ASC") String[] sort){
@@ -34,12 +35,17 @@ public class ProductAPI {
         try {
 
             Pageable pagingSort = CommonUtils.sortItem(page, limit, sort);
-            Page<Product> productPage;
+            Page<Product> productPage = null;
 
-            if(productName == null) {
+            if(productName == null && categoryId == null) {
                 productPage = productService.findAllPageAndSort(pagingSort);
             } else {
-                productPage = productService.findByNameContaining(productName, pagingSort);
+                if(categoryId == null) {
+                    productPage = productService.findByNameContaining(productName, pagingSort);
+                } else if(productName == null) {
+                    productPage = productService.findByCategoryIdPageAndSort(categoryId, pagingSort);
+                }
+
             }
 
             if(productPage.getContent().isEmpty()){
@@ -87,14 +93,6 @@ public class ProductAPI {
 
         productService.deleteProduct(theId);
         return new ResponseEntity<>(new MessageResponse("Delete successfully!", HttpStatus.OK, LocalDateTime.now()), HttpStatus.OK);
-    }
-
-    @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<Product>> findProductsByCategoryId(@PathVariable("categoryId") Long categoryId ){
-
-        List<Product> theProducts = productService.findByCategoryId(categoryId);
-        return new ResponseEntity<>(theProducts, HttpStatus.OK);
-
     }
 
     @GetMapping("/count")

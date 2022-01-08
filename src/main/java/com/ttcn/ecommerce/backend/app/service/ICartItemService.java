@@ -24,5 +24,7 @@ public interface ICartItemService {
 
     void deleteCartItem(Long theId);
 
+    Page<CartItem> findByIdContaining(Long id, Pageable pagingSort);
 
+    Page<CartItem> findByCartIdPageAndSort(Long cartId, Pageable pagingSort);
 }

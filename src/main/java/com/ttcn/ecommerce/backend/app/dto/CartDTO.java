@@ -2,8 +2,6 @@ package com.ttcn.ecommerce.backend.app.dto;
 
 
 import com.ttcn.ecommerce.backend.app.entity.CartItem;
-import com.ttcn.ecommerce.backend.app.entity.Customer;
-import com.ttcn.ecommerce.backend.app.validation.ValidUsername;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;

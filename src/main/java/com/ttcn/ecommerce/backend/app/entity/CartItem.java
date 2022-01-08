@@ -4,7 +4,6 @@ package com.ttcn.ecommerce.backend.app.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Entity
 @Table(name = "cart_item")

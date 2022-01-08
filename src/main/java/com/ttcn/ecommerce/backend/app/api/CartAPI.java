@@ -1,6 +1,5 @@
 package com.ttcn.ecommerce.backend.app.api;
 
-import com.sun.istack.NotNull;
 import com.ttcn.ecommerce.backend.app.dto.CartDTO;
 import com.ttcn.ecommerce.backend.app.dto.MessageResponse;
 import com.ttcn.ecommerce.backend.app.entity.Cart;
@@ -8,9 +7,7 @@ import com.ttcn.ecommerce.backend.app.service.ICartService;
 import com.ttcn.ecommerce.backend.app.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,42 +15,36 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/carts")
-public class CartApi {
+@CrossOrigin
+public class CartAPI {
 
     @Autowired
     private ICartService cartService;
 
     @GetMapping(value = { "", "/" })
-    public ResponseEntity<List<Cart>> findAll( @RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<Cart>> findAll(@RequestParam(value = "id", required = false) Long id,
+                                              @RequestParam(name = "customerId", required = false) Long customerId,
+                                              @RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "10") int limit,
                                                @RequestParam(defaultValue = "id,ASC") String[] sort){
         try {
+            Pageable pagingSort = CommonUtils.sortItem(page, limit, sort);
+            Page<Cart> cartPage = null;
 
-            List<Sort.Order> orders = new ArrayList<>();
-
-            if (sort[0].contains(",")) {
-                for (String sortOrder : sort) {
-                    String[] _sort = sortOrder.split(",");
-                    Sort.Direction dire = CommonUtils.getSortDirection(_sort[1]);
-                    Sort.Order order = new Sort.Order(dire,_sort[0]);
-                    orders.add( order );
-                }
+            if(id == null && customerId == null) {
+                cartPage = cartService.findAllPageAndSort(pagingSort);
             } else {
-                // sort=[field, direction]
-                Sort.Direction dire = CommonUtils.getSortDirection(sort[1]);
-                Sort.Order order = new Sort.Order(dire, sort[0]);
-                orders.add( order );
+                if(customerId == null) {
+                    cartPage = cartService.findByIdContaining(id, pagingSort);
+                } else if(id == null) {
+                    cartPage = cartService.findByCustomerIdPageAndSort(customerId, pagingSort);
+                }
+
             }
-
-            Pageable pagingSort = PageRequest.of(page, limit, Sort.by(orders));
-            Page<Cart> cartPage;
-
-            cartPage = cartService.findAllPageAndSort(pagingSort);
 
             if(cartPage.getContent().isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

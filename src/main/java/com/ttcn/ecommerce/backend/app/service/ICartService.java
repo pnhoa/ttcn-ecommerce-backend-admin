@@ -24,4 +24,8 @@ public interface ICartService {
     MessageResponse updateCart(Long theId, CartDTO cartDTO);
 
     void deleteCart(Long theId);
+
+    Page<Cart> findByIdContaining(Long id, Pageable pagingSort);
+
+    Page<Cart> findByCustomerIdPageAndSort(Long customerId, Pageable pagingSort);
 }

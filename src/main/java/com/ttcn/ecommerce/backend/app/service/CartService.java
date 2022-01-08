@@ -22,6 +22,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class CartService implements ICartService{
+
     @Autowired
     private CartRepository cartRepo;
     @Autowired
@@ -95,6 +96,28 @@ public class CartService implements ICartService{
                 () -> new ResourceNotFoundException("can't find cart with ID=" + theId));
 
         cartRepo.delete(cart);
+    }
+
+    @Override
+    public Page<Cart> findByIdContaining(Long id, Pageable pagingSort) {
+        return cartRepo.findById(id, pagingSort);
+    }
+
+    @Override
+    public Page<Cart> findByCustomerIdPageAndSort(Long customerId, Pageable pagingSort) {
+
+        Optional<Customer> customer = customerRepo.findById(customerId);
+
+        if(!customer.isPresent()){
+            throw  new ResourceNotFoundException("Not found customer with ID= " + customerId);
+        }
+        else
+        {
+            Page<Cart> cartPage = cartRepo.findByCustomerId(customerId,pagingSort);
+            return cartPage;
+        }
+
+
     }
 
 

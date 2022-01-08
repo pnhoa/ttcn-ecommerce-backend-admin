@@ -1,12 +1,6 @@
 package com.ttcn.ecommerce.backend.app.dto;
 
 
-import com.ttcn.ecommerce.backend.app.entity.BaseEntity;
-import com.ttcn.ecommerce.backend.app.entity.Cart;
-import com.ttcn.ecommerce.backend.app.entity.Product;
-
-import javax.persistence.*;
-
 public class CartItemDTO extends AbstractDTO {
     private long cartId;
 
