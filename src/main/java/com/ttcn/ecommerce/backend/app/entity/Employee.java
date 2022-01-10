@@ -35,7 +35,7 @@ public class Employee extends BaseEntity{
     @Column(name = "profilePicture")
     private String profilePicture;
 
-    @Column(name = "enabled", columnDefinition = "default 1")
+    @Column(name = "enabled")
     private int enabled;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

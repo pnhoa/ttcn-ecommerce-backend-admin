@@ -35,7 +35,7 @@ public class Customer extends BaseEntity{
     @Column(name = "profilePicture")
     private String profilePicture;
 
-    @Column(name = "enabled", columnDefinition = "default 1")
+    @Column(name = "enabled")
     private int enabled;
 
     @Enumerated(EnumType.STRING)
