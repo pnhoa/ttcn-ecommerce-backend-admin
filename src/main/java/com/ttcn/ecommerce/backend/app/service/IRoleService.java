@@ -1,14 +1,22 @@
 package com.ttcn.ecommerce.backend.app.service;
 
+import com.ttcn.ecommerce.backend.app.dto.MessageResponse;
+import com.ttcn.ecommerce.backend.app.dto.RoleDTO;
 import com.ttcn.ecommerce.backend.app.entity.Role;
 
 import java.util.List;
 
 public interface IRoleService {
 
-    public List<Role> findAll();
+    List<Role> findAll();
 
-    public Role findById(Long theId);
+    Role findById(Long theId);
 
-    public Role findByCode(String code);
+    Role findByCode(String code);
+
+    MessageResponse createRole(RoleDTO theRoleDto);
+
+    MessageResponse updateRole(Long theId, RoleDTO theRoleDto);
+
+    void deleteProduct(Long theId);
 }
