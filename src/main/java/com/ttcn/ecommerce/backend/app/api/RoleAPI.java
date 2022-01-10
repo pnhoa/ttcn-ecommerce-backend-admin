@@ -2,6 +2,7 @@ package com.ttcn.ecommerce.backend.app.api;
 
 import com.ttcn.ecommerce.backend.app.dto.MessageResponse;
 import com.ttcn.ecommerce.backend.app.dto.RoleDTO;
+import com.ttcn.ecommerce.backend.app.entity.Feedback;
 import com.ttcn.ecommerce.backend.app.entity.Role;
 import com.ttcn.ecommerce.backend.app.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/roles")
@@ -20,6 +22,14 @@ public class RoleAPI {
 
     @Autowired
     private IRoleService roleService;
+
+    @GetMapping("")
+    public ResponseEntity<List<Role>> findAll(){
+        List<Role> roles = roleService.findAll();
+
+        return new ResponseEntity<>(roles, HttpStatus.OK);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Role> findById(@PathVariable("id") Long theId){
