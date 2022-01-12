@@ -111,7 +111,7 @@ public class ProductService implements IProductService{
 
     @Override
     public Page<Product> findByNameContaining(String productName, Pageable pagingSort) {
-        return productRepository.findByNameContaining(productName, pagingSort);
+        return productRepository.findByNameContainingIgnoreCase(productName, pagingSort);
     }
 
     @Override

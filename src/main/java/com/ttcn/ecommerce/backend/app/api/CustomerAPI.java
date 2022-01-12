@@ -26,7 +26,7 @@ public class CustomerAPI {
     private ICustomerService customerService;
 
     @GetMapping("")
-    public ResponseEntity<List<Customer>> findAll(@RequestParam(name = "userName_contains", required = false) String userName,
+    public ResponseEntity<List<Customer>> findAll(@RequestParam(name = "q", required = false) String userName,
                                                  @RequestParam(defaultValue = "0") int page,
                                                  @RequestParam(defaultValue = "20") int limit,
                                                  @RequestParam(defaultValue = "id,ASC") String[] sort){

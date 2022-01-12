@@ -26,7 +26,7 @@ public class CategoryAPI {
     private ICategoryService categoryService;
 
     @GetMapping("")
-    public ResponseEntity<List<Category>> getAll(@RequestParam(name = "categoryName_contains", required = false) String categoryName,
+    public ResponseEntity<List<Category>> getAll(@RequestParam(name = "q", required = false) String categoryName,
                                                  @RequestParam(defaultValue = "0") int page,
                                                  @RequestParam(defaultValue = "20") int limit,
                                                  @RequestParam(defaultValue = "id,ASC") String[] sort){

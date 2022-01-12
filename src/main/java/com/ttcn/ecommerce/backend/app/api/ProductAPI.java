@@ -27,7 +27,7 @@ public class ProductAPI {
     private IProductService productService;
 
     @GetMapping("")
-    public ResponseEntity<List<Product>> findAll( @RequestParam(name = "productName_contains", required = false) String productName,
+    public ResponseEntity<List<Product>> findAll( @RequestParam(name = "q", required = false) String productName,
                                                   @RequestParam(name = "categoryId", required = false) Long categoryId,
                                                   @RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "20") int limit,
@@ -48,8 +48,6 @@ public class ProductAPI {
                 }
 
             }
-
-
 
             return new ResponseEntity<>(productPage.getContent(), HttpStatus.OK);
         } catch (Exception e) {

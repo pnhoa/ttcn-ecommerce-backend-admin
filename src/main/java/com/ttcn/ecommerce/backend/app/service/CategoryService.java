@@ -85,6 +85,6 @@ public class CategoryService implements ICategoryService{
 
     @Override
     public Page<Category> findByNameContaining(String categoryName, Pageable pagingSort) {
-        return categoryRepository.findByNameContaining(categoryName, pagingSort);
+        return categoryRepository.findByNameContainingIgnoreCase(categoryName, pagingSort);
     }
 }

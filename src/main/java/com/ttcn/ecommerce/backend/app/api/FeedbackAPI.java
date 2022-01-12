@@ -26,7 +26,7 @@ public class FeedbackAPI {
     private IFeedbackService feedbackService;
 
     @GetMapping("")
-    public ResponseEntity<List<Feedback>> findAll(@RequestParam(value = "rating_contains", required = false) Integer rating,
+    public ResponseEntity<List<Feedback>> findAll(@RequestParam(value = "q", required = false) Integer rating,
                                                   @RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "20") int limit,
                                                   @RequestParam(defaultValue = "id,ASC") String[] sort){
