@@ -28,7 +28,7 @@ public class FeedbackAPI {
     @GetMapping("")
     public ResponseEntity<List<Feedback>> findAll(@RequestParam(value = "rating_contains", required = false) Integer rating,
                                                   @RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "10") int limit,
+                                                  @RequestParam(defaultValue = "20") int limit,
                                                   @RequestParam(defaultValue = "id,ASC") String[] sort){
 
         try {
@@ -40,12 +40,6 @@ public class FeedbackAPI {
                 feedbackPage = feedbackService.findAllPageAndSort(pagingSort);
             } else {
                 feedbackPage = feedbackService.findByRatingContaining(rating, pagingSort);
-            }
-
-
-
-            if(feedbackPage.getContent().isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             return new ResponseEntity<>(feedbackPage.getContent(), HttpStatus.OK);

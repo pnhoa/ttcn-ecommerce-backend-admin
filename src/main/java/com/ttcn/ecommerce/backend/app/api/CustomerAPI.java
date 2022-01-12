@@ -28,7 +28,7 @@ public class CustomerAPI {
     @GetMapping("")
     public ResponseEntity<List<Customer>> findAll(@RequestParam(name = "userName_contains", required = false) String userName,
                                                  @RequestParam(defaultValue = "0") int page,
-                                                 @RequestParam(defaultValue = "10") int limit,
+                                                 @RequestParam(defaultValue = "20") int limit,
                                                  @RequestParam(defaultValue = "id,ASC") String[] sort){
 
         try {
@@ -40,10 +40,6 @@ public class CustomerAPI {
                 customerPage = customerService.findAllPageAndSort(pagingSort);
             } else {
                 customerPage = customerService.findByUserNameContaining(userName, pagingSort);
-            }
-
-            if(customerPage.getContent().isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             return new ResponseEntity<>(customerPage.getContent(), HttpStatus.OK);

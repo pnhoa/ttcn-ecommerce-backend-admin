@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,7 @@ public class ProductAPI {
     public ResponseEntity<List<Product>> findAll( @RequestParam(name = "productName_contains", required = false) String productName,
                                                   @RequestParam(name = "categoryId", required = false) Long categoryId,
                                                   @RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "10") int limit,
+                                                  @RequestParam(defaultValue = "20") int limit,
                                                   @RequestParam(defaultValue = "id,ASC") String[] sort){
 
         try {
@@ -48,9 +49,7 @@ public class ProductAPI {
 
             }
 
-            if(productPage.getContent().isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+
 
             return new ResponseEntity<>(productPage.getContent(), HttpStatus.OK);
         } catch (Exception e) {

@@ -29,7 +29,7 @@ public class CartAPI {
     public ResponseEntity<List<Cart>> findAll(@RequestParam(value = "id", required = false) Long id,
                                               @RequestParam(name = "customerId", required = false) Long customerId,
                                               @RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "10") int limit,
+                                               @RequestParam(defaultValue = "20") int limit,
                                                @RequestParam(defaultValue = "id,ASC") String[] sort){
         try {
             Pageable pagingSort = CommonUtils.sortItem(page, limit, sort);
@@ -44,10 +44,6 @@ public class CartAPI {
                     cartPage = cartService.findByCustomerIdPageAndSort(customerId, pagingSort);
                 }
 
-            }
-
-            if(cartPage.getContent().isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             return new ResponseEntity<>(cartPage.getContent(), HttpStatus.OK);

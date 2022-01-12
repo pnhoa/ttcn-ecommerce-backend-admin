@@ -28,7 +28,7 @@ public class CategoryAPI {
     @GetMapping("")
     public ResponseEntity<List<Category>> getAll(@RequestParam(name = "categoryName_contains", required = false) String categoryName,
                                                  @RequestParam(defaultValue = "0") int page,
-                                                 @RequestParam(defaultValue = "10") int limit,
+                                                 @RequestParam(defaultValue = "20") int limit,
                                                  @RequestParam(defaultValue = "id,ASC") String[] sort){
 
         try {
@@ -42,9 +42,6 @@ public class CategoryAPI {
                 categoryPage = categoryService.findByNameContaining(categoryName, pagingSort);
             }
 
-            if(categoryPage.getContent().isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
 
             return new ResponseEntity<>(categoryPage.getContent(), HttpStatus.OK);
         } catch (Exception e) {
