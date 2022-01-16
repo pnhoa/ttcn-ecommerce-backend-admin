@@ -38,6 +38,18 @@ public class JwtUtils {
 					.signWith(SignatureAlgorithm.HS512, jwtSecret)
 					.compact();
 	}
+
+	public String generateJwtTokenForEmployee(Authentication authentication) {
+
+		EmployeeDetailsImpl userPrincipal = (EmployeeDetailsImpl) authentication.getPrincipal();
+
+		return Jwts.builder()
+				.setSubject(userPrincipal.getUsername())
+				.setIssuedAt(new Date())
+				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+				.signWith(SignatureAlgorithm.HS512, jwtSecret)
+				.compact();
+	}
 	
 	public String getUserNameFromJwtToken(String token) {
 		return Jwts.parser().setSigningKey(jwtSecret)

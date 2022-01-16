@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "employee")
-@JsonIgnoreProperties("roles")
+@JsonIgnoreProperties({"roles", "password"})
 public class Employee extends BaseEntity{
 
     @Column(name = "username", unique = true, nullable = false)
@@ -23,7 +23,7 @@ public class Employee extends BaseEntity{
     @Column(name = "address")
     private String address;
 
-    @Column(name = "phone_number", unique = true)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "email", unique = true, nullable = false)

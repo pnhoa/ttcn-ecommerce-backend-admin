@@ -3,10 +3,12 @@ package com.ttcn.ecommerce.backend.app.config;
 import com.ttcn.ecommerce.backend.app.security.AuthEntryPointJwt;
 import com.ttcn.ecommerce.backend.app.security.AuthTokenFilter;
 import com.ttcn.ecommerce.backend.app.service.ICustomerService;
+import com.ttcn.ecommerce.backend.app.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,6 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private ICustomerService customerService;
 
     @Autowired
+    private IEmployeeService employeeService;
+
+    @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
     @Autowired
@@ -39,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // TODO Auto-generated method stub
         auth.userDetailsService(customerService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(employeeService).passwordEncoder(passwordEncoder);
     }
 
 
@@ -55,8 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**", "/api/products/**", "/api/categories/**", "/api/feedbacks/**",
-                                        "/api/customers/**", "/api/carts/**", "/api/cartItems/**", "/v2/api-docs/**", "/api/roles").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/**", "/api/products/**", "/api/categories/**", "/api/feedbacks/**", "/api/admin/auth/**",
+                                        "/api/customers/**", "/api/carts/**", "/api/cartItems/**", "/v2/api-docs/**", "/api/roles", "/api/employees/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

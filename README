@@ -52,6 +52,54 @@ DOCS-API: URL: http://localhost:8080/v2/api-docs
                         "timestamp": "2022-01-08T10:57:50.9573652"
                     }
 
++ Auth (Employee-Admin)
+    - Login
+        URL: http://localhost:8080/admin/auth/signin
+        Method: POST
+        Body: "userName",
+              "password"
+        Return:
+            * if valid account
+                {
+                    "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAxIiwiaWF0IjoxNjQyMzE2MzQ4LCJleHAiOjE2NDI0MDI3NDh9.aVd_rfObMdBogOyfLbJOyhCutBsy51OXJiiaj0jzXdDzTmdkggLn3nYnn5lHGLPhjbDU5dZk9PMkwD-clSWahw",
+                    "type": "Bearer",
+                    "id": 2,
+                    "username": "admin01",
+                    "email": "admin01@gmail.com",
+                    "roles": [
+                        "ROLE_ADMIN",
+                        "ROLE_EMPLOYEE"
+                    ]
+                }
+            * invalid account:
+            return Http status 401 (Unauthorized)
+    - Register
+        URL: http://localhost:8080/admin/auth/signup
+            Method: POST
+            Body: "userName",
+                  "password",
+                  "name",
+                  "address",
+                  "phoneNumber",
+                  "email",
+                  "profilePicture",
+                  "roleCode": "ROLE_ADMIN" or "ROLE_EMPLOYEE",
+                  "gender" (0,1,2) -> (Male, Female, LGBT)
+            Return:
+                * if valid account
+                    {
+                        "message": "Employee registered successfully!",
+                        "status": "OK",
+                        "timestamp": "2022-01-08T10:57:23.7645798"
+                    }
+                * invalid account:
+                    return Http status 400 (Bad Request)
+                    {
+                        "message": "Error: Username is already use.",
+                        "status": "BAD_REQUEST",
+                        "timestamp": "2022-01-08T10:57:50.9573652"
+                    }
+
 + Products: base url for product -> http://localhost:8080/products
     - Get all products
         Method: GET
@@ -245,6 +293,7 @@ DOCS-API: URL: http://localhost:8080/v2/api-docs
         Body: "modifiedBy",
               "userName" (not modified),
               "name",
+              "password" = "" (because not change password in update account, only change password in reset)
               "address",
               "phoneNumber",
               "email",

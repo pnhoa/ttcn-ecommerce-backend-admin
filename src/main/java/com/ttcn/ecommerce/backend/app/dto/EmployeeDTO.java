@@ -9,7 +9,7 @@ import com.ttcn.ecommerce.backend.app.validation.ValidUsername;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@JsonIgnoreProperties({"roles", "roleCode" })
+@JsonIgnoreProperties({"roles"})
 public class EmployeeDTO extends AbstractDTO{
 
     @ValidUsername
@@ -40,6 +40,7 @@ public class EmployeeDTO extends AbstractDTO{
 
     private Set<Role> roles;
 
+    @NotNull(message = "is required")
     private String roleCode;
 
     public EmployeeDTO() {
