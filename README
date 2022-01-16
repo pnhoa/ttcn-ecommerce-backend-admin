@@ -300,7 +300,6 @@ DOCS-API: URL: http://localhost:8080/v2/api-docs
               "gender",
               "profilePicture",
               "enabled",
-              "provider"
     - Delete customer (ROLE: ADMIN)
         Method: DELETE
         URL: http://localhost:8080/customers/{id}

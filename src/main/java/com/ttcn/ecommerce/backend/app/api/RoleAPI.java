@@ -27,6 +27,12 @@ public class RoleAPI {
     public ResponseEntity<List<Role>> findAll(){
         List<Role> roles = roleService.findAll();
 
+        for(int i = 0 ; i < roles.size() ; i++) {
+            if(roles.get(i).getCode().equals("ROLE_CUSTOMER")) {
+                roles.remove(roles.get(i));
+            }
+        }
+
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
