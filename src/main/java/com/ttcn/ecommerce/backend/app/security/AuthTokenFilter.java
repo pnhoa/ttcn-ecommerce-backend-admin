@@ -1,13 +1,6 @@
 package com.ttcn.ecommerce.backend.app.security;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.ttcn.ecommerce.backend.app.service.ICustomerService;
+import com.ttcn.ecommerce.backend.app.service.IEmployeeService;
 import com.ttcn.ecommerce.backend.app.utils.JwtUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +12,12 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 
 public class AuthTokenFilter extends OncePerRequestFilter {
 	@Autowired
@@ -27,7 +26,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 	private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
 	@Autowired
-	private ICustomerService customerService;
+	private IEmployeeService employeeService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -39,7 +38,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 			if(jwt !=null && jwtUtils.validateJwtToken(jwt)) {
 				String username = jwtUtils.getUserNameFromJwtToken(jwt);
 				
-				UserDetails userDetails = customerService.loadUserByUsername(username);
+				UserDetails userDetails = employeeService.loadUserByUsername(username);
 				
 				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null,
 						userDetails.getAuthorities());

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +27,11 @@ public class CustomerAPI {
     private ICustomerService customerService;
 
     @GetMapping("")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<List<Customer>> findAll(@RequestParam(name = "q", required = false) String userName,
-                                                 @RequestParam(defaultValue = "0") int page,
-                                                 @RequestParam(defaultValue = "20") int limit,
-                                                 @RequestParam(defaultValue = "id,ASC") String[] sort){
+                                                  @RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "20") int limit,
+                                                  @RequestParam(defaultValue = "id,ASC") String[] sort){
 
         try {
 
@@ -49,13 +51,18 @@ public class CustomerAPI {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDTO> findById(@PathVariable("id") Long theId){
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN') or hasRole('CUSTOMER')")
+    public ResponseEntity<?> findById(@PathVariable("id") Long theId){
 
         CustomerDTO theCustomer = customerService.findById(theId);
+        if(theCustomer == null) {
+            return new ResponseEntity<>(new MessageResponse("This account was banned.", HttpStatus.LOCKED, LocalDateTime.now()), HttpStatus.LOCKED);
+        }
         return new ResponseEntity<>(theCustomer, HttpStatus.OK);
     }
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MessageResponse> createCustomer(@Valid @RequestBody CustomerDTO theCustomerDto, BindingResult theBindingResult){
 
         if(theBindingResult.hasErrors()){
@@ -67,6 +74,7 @@ public class CustomerAPI {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN') or hasRole('CUSTOMER')")
     public ResponseEntity<MessageResponse> updateCustomer(@PathVariable("id") Long theId,
                                                           @Valid @RequestBody CustomerDTO theCustomerDto, BindingResult bindingResult){
 
@@ -79,6 +87,7 @@ public class CustomerAPI {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteCustomer(@PathVariable("id") Long theId){
 
         customerService.deleteCustomer(theId);
@@ -87,6 +96,7 @@ public class CustomerAPI {
 
 
     @GetMapping("/count")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<?> count(){
         return new ResponseEntity<>(customerService.count(), HttpStatus.OK);
     }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,7 @@ public class ProductAPI {
             Pageable pagingSort = CommonUtils.sortItem(page, limit, sort);
             Page<Product> productPage = null;
 
+
             if(productName == null && categoryId == null) {
                 productPage = productService.findAllPageAndSort(pagingSort);
             } else {
@@ -63,6 +65,7 @@ public class ProductAPI {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<MessageResponse> createProduct(@Valid @RequestBody ProductDTO theProductDto, BindingResult theBindingResult){
 
         if(theBindingResult.hasErrors()){
@@ -74,6 +77,7 @@ public class ProductAPI {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<MessageResponse> updateProduct(@PathVariable("id") Long theId,
                                                          @Valid @RequestBody ProductDTO theProductDto, BindingResult bindingResult){
 
@@ -86,6 +90,7 @@ public class ProductAPI {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteProduct(@PathVariable("id") Long theId){
 
         productService.deleteProduct(theId);
@@ -93,6 +98,7 @@ public class ProductAPI {
     }
 
     @GetMapping("/count")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<?> count(){
         return new ResponseEntity<>(productService.count(), HttpStatus.OK);
     }

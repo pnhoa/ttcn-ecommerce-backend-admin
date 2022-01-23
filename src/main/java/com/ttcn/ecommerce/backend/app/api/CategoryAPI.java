@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,6 +58,7 @@ public class CategoryAPI {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<MessageResponse> createCategory(@Valid @RequestBody CategoryDTO theCategoryDto, BindingResult theBindingResult){
 
         if(theBindingResult.hasErrors()){
@@ -68,8 +70,9 @@ public class CategoryAPI {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<MessageResponse> updateCategory(@PathVariable("id") Long theId,
-                                                         @Valid @RequestBody CategoryDTO theCategoryDto, BindingResult bindingResult){
+                                                          @Valid @RequestBody CategoryDTO theCategoryDto, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
             return new ResponseEntity<MessageResponse>(new MessageResponse("Invalid value for update category", HttpStatus.BAD_REQUEST, LocalDateTime.now()), HttpStatus.BAD_REQUEST);
@@ -80,7 +83,8 @@ public class CategoryAPI {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") Long theId){
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<?> deleteCategory(@PathVariable("id") Long theId){
 
         categoryService.deleteCategory(theId);
         return new ResponseEntity<>(new MessageResponse("Deleted successfully!", HttpStatus.OK, LocalDateTime.now()), HttpStatus.OK);

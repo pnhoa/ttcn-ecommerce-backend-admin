@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,11 +27,12 @@ public class CartAPI {
     private ICartService cartService;
 
     @GetMapping(value = { "", "/" })
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN') ")
     public ResponseEntity<List<Cart>> findAll(@RequestParam(value = "id", required = false) Long id,
                                               @RequestParam(name = "customerId", required = false) Long customerId,
                                               @RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "20") int limit,
-                                               @RequestParam(defaultValue = "id,ASC") String[] sort){
+                                              @RequestParam(defaultValue = "20") int limit,
+                                              @RequestParam(defaultValue = "id,ASC") String[] sort){
         try {
             Pageable pagingSort = CommonUtils.sortItem(page, limit, sort);
             Page<Cart> cartPage = null;
@@ -53,6 +55,7 @@ public class CartAPI {
     }
 
     @GetMapping(value = { "/{cid}" })
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN') or hasRole('CUSTOMER')")
     public ResponseEntity<Cart> getCart(@PathVariable("cid") long id) {
         Cart cart = cartService.findById(id);
         return new ResponseEntity<>(cart, HttpStatus.OK);
@@ -60,6 +63,7 @@ public class CartAPI {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN') or hasRole('CUSTOMER')")
     public ResponseEntity<MessageResponse> createCart(@Valid @RequestBody CartDTO cartDto, BindingResult theBindingResult){
 
         if(theBindingResult.hasErrors()){
@@ -70,6 +74,7 @@ public class CartAPI {
         return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN') or hasRole('CUSTOMER')")
     public ResponseEntity<MessageResponse> updateCart(@PathVariable("id") long theId,
                                                       @Valid @RequestBody CartDTO cartDto, BindingResult bindingResult){
 
@@ -82,13 +87,15 @@ public class CartAPI {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") long theId){
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<?> deleteCart(@PathVariable("id") long theId){
 
         cartService.deleteCart(theId);
         return new ResponseEntity<>(new MessageResponse("Delete cart successfully!", HttpStatus.OK, LocalDateTime.now()), HttpStatus.OK);
     }
 
     @GetMapping("/customer/{customerId}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN') or hasRole('CUSTOMER')")
     public ResponseEntity<List<Cart>> findCartsByCustomerId(@PathVariable("customerId") long customerId ){
 
         List<Cart> carts = cartService.findByCustomerId(customerId);
@@ -97,3 +104,4 @@ public class CartAPI {
     }
 
 }
+

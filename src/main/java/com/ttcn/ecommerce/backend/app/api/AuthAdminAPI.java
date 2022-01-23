@@ -8,8 +8,10 @@ import com.ttcn.ecommerce.backend.app.service.IEmployeeService;
 import com.ttcn.ecommerce.backend.app.utils.EmployeeDetailsImpl;
 import com.ttcn.ecommerce.backend.app.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -60,6 +62,7 @@ public class AuthAdminAPI {
     }
 
     @PostMapping("/signup")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> registerEmployee(@Validated @RequestBody EmployeeDTO employeeDto, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){

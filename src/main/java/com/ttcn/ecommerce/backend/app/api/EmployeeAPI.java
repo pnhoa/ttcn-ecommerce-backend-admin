@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class EmployeeAPI {
     private IEmployeeService employeeService;
 
     @GetMapping("")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<List<Employee>> findAll(@RequestParam(name = "q", required = false) String userName,
                                                   @RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "20") int limit,
@@ -49,6 +51,7 @@ public class EmployeeAPI {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<EmployeeDTO> findById(@PathVariable("id") Long theId){
 
         EmployeeDTO theEmployee = employeeService.findById(theId);
@@ -56,6 +59,7 @@ public class EmployeeAPI {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MessageResponse> createEmployee(@Valid @RequestBody EmployeeDTO theEmployeeDto, BindingResult theBindingResult){
 
         if(theBindingResult.hasErrors()){
@@ -67,6 +71,7 @@ public class EmployeeAPI {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')") // check if role = EMPLOYEE => not change role when update
     public ResponseEntity<MessageResponse> updateEmployee(@PathVariable("id") Long theId,
                                                           @Valid @RequestBody EmployeeDTO theEmployeeDto, BindingResult bindingResult){
 
@@ -79,6 +84,7 @@ public class EmployeeAPI {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long theId){
 
         employeeService.deleteEmployee(theId);
@@ -87,6 +93,7 @@ public class EmployeeAPI {
 
 
     @GetMapping("/count")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<?> count(){
         return new ResponseEntity<>(employeeService.count(), HttpStatus.OK);
     }
