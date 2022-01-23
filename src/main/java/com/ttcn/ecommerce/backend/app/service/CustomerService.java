@@ -154,7 +154,7 @@ public class CustomerService implements ICustomerService {
             throw new ResourceNotFoundException("Not found customer with ID=" + theId);
         } else {
             theCustomer.get().setModifiedDate(new Date());
-            theCustomer.get().setModifiedBy(theCustomer.get().getName());
+            theCustomer.get().setModifiedBy(theCustomer.get().getUserName());
             theCustomer.get().setName(theCustomerDto.getName());
             theCustomer.get().setEmail(theCustomerDto.getEmail());
             theCustomer.get().setPhoneNumber(theCustomerDto.getPhoneNumber());
@@ -208,6 +208,21 @@ public class CustomerService implements ICustomerService {
     @Override
     public Long count() {
         return customerRepository.count();
+    }
+
+    @Override
+    public Customer findByIdCustomer(Long customerId) {
+        Optional<Customer> theCustomer = customerRepository.findById(customerId);
+
+        if(!theCustomer.isPresent()) {
+            throw new ResourceNotFoundException("Not found user with ID=" + customerId);
+        } else {
+            if(theCustomer.get().getEnabled() == 1) {
+                return theCustomer.get();
+            }
+        }
+
+        return null;
     }
 
 }

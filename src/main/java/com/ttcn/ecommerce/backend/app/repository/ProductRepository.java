@@ -17,7 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             + " OR lower(p.shortDescription) LIKE %?1% OR lower(p.description) LIKE %?1% OR lower(p.brand) LIKE %?1%" )
     List<Product> search( String key);
 
-    Page<Product> findByNameContaining(String name, Pageable pageable);
+    Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
     Page<Product> findByCategoryId(Long id, Pageable pageable);
 

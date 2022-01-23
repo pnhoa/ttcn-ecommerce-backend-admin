@@ -36,4 +36,6 @@ public interface ICustomerService extends UserDetailsService {
     Page<Customer> findByUserNameContaining(String userName, Pageable pagingSort);
 
     Long count();
+
+    Customer findByIdCustomer(Long customerId);
 }

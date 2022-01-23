@@ -2,9 +2,7 @@ package com.ttcn.ecommerce.backend.app.api;
 
 import com.ttcn.ecommerce.backend.app.dto.CustomerDTO;
 import com.ttcn.ecommerce.backend.app.dto.MessageResponse;
-import com.ttcn.ecommerce.backend.app.dto.ProductDTO;
 import com.ttcn.ecommerce.backend.app.entity.Customer;
-import com.ttcn.ecommerce.backend.app.entity.Product;
 import com.ttcn.ecommerce.backend.app.service.ICustomerService;
 import com.ttcn.ecommerce.backend.app.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +19,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
+@CrossOrigin
 public class CustomerAPI {
 
     @Autowired
     private ICustomerService customerService;
 
     @GetMapping("")
-    public ResponseEntity<List<Customer>> findAll(@RequestParam(name = "userName_contains", required = false) String userName,
+    public ResponseEntity<List<Customer>> findAll(@RequestParam(name = "q", required = false) String userName,
                                                  @RequestParam(defaultValue = "0") int page,
-                                                 @RequestParam(defaultValue = "10") int limit,
+                                                 @RequestParam(defaultValue = "20") int limit,
                                                  @RequestParam(defaultValue = "id,ASC") String[] sort){
 
         try {
@@ -41,10 +40,6 @@ public class CustomerAPI {
                 customerPage = customerService.findAllPageAndSort(pagingSort);
             } else {
                 customerPage = customerService.findByUserNameContaining(userName, pagingSort);
-            }
-
-            if(customerPage.getContent().isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             return new ResponseEntity<>(customerPage.getContent(), HttpStatus.OK);

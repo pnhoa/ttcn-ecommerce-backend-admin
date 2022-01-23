@@ -23,7 +23,7 @@ public class Customer extends BaseEntity{
     @Column(name = "address")
     private String address;
 
-    @Column(name = "phone_number", unique = true)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "email", unique = true, nullable = false)
@@ -35,7 +35,7 @@ public class Customer extends BaseEntity{
     @Column(name = "profilePicture")
     private String profilePicture;
 
-    @Column(name = "enabled", columnDefinition = "default 1")
+    @Column(name = "enabled")
     private int enabled;
 
     @Enumerated(EnumType.STRING)

@@ -1,49 +1,49 @@
-package com.ttcn.ecommerce.backend.app.entity;
+package com.ttcn.ecommerce.backend.app.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ttcn.ecommerce.backend.app.entity.Role;
+import com.ttcn.ecommerce.backend.app.validation.ValidEmail;
+import com.ttcn.ecommerce.backend.app.validation.ValidPhoneNumber;
+import com.ttcn.ecommerce.backend.app.validation.ValidUsername;
 
-import javax.persistence.*;
-import java.util.HashSet;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Entity
-@Table(name = "employee")
-@JsonIgnoreProperties({"roles", "password"})
-public class Employee extends BaseEntity{
+@JsonIgnoreProperties({"roles"})
+public class EmployeeDTO extends AbstractDTO{
 
-    @Column(name = "username", unique = true, nullable = false)
+    @ValidUsername
+    @NotNull(message = "is required")
     private String userName;
 
-    @Column(name = "password", nullable = false)
+    @NotNull(message = "is required")
     private String password;
 
-    @Column(name = "name")
+    @NotNull(message = "is required")
     private String name;
 
-    @Column(name = "address")
     private String address;
 
-    @Column(name = "phone_number")
+    @NotNull(message = "is required")
+    @ValidPhoneNumber
     private String phoneNumber;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @ValidEmail
+    @NotNull(message = "is required")
     private String email;
 
-    @Column(name = "gender")
     private int gender;
 
-    @Column(name = "profilePicture")
     private String profilePicture;
 
-    @Column(name = "enabled")
     private int enabled;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "employee_role", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @JsonIgnoreProperties("employees")
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
-    public Employee() {
+    @NotNull(message = "is required")
+    private String roleCode;
+
+    public EmployeeDTO() {
     }
 
     public String getUserName() {
@@ -52,14 +52,6 @@ public class Employee extends BaseEntity{
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
@@ -124,5 +116,21 @@ public class Employee extends BaseEntity{
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
